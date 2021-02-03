@@ -1,0 +1,210 @@
+/content/yolov5
+Using torch 1.7.0+cu101 CUDA:0 (Tesla P100-PCIE-16GB, 16280MB)
+
+Namespace(adam=False, batch_size=16, bucket='', cache_images=True, cfg='./models/yolov5s.yaml', data='../data.yaml', device='', epochs=30, evolve=False, exist_ok=False, global_rank=-1, hyp='./data/hyp.finetune.yaml', image_weights=False, img_size=[416, 416], local_rank=-1, log_imgs=16, multi_scale=False, name='yolov5s_results', noautoanchor=False, nosave=False, notest=False, project='runs/train', rect=False, resume=False, save_dir='runs/train/yolov5s_results', single_cls=False, sync_bn=False, total_batch_size=16, weights='yolov5m.pt', workers=8, world_size=1)
+Start Tensorboard with "tensorboard --logdir runs/train", view at http://localhost:6006/
+2021-02-02 12:29:57.335423: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.10.1
+Hyperparameters {'lr0': 0.0032, 'lrf': 0.12, 'momentum': 0.843, 'weight_decay': 0.00036, 'warmup_epochs': 2.0, 'warmup_momentum': 0.5, 'warmup_bias_lr': 0.05, 'box': 0.0296, 'cls': 0.243, 'cls_pw': 0.631, 'obj': 0.301, 'obj_pw': 0.911, 'iou_t': 0.2, 'anchor_t': 2.91, 'fl_gamma': 0.0, 'hsv_h': 0.0138, 'hsv_s': 0.664, 'hsv_v': 0.464, 'degrees': 0.373, 'translate': 0.245, 'scale': 0.898, 'shear': 0.602, 'perspective': 0.0, 'flipud': 0.00856, 'fliplr': 0.5, 'mosaic': 1.0, 'mixup': 0.243}
+Downloading https://github.com/ultralytics/yolov5/releases/download/v3.1/yolov5m.pt to yolov5m.pt...
+100% 41.9M/41.9M [00:02<00:00, 19.5MB/s]
+
+Overriding model.yaml nc=80 with nc=2
+
+                 from  n    params  module                                  arguments                     
+  0                -1  1      3520  models.common.Focus                     [3, 32, 3]                    
+  1                -1  1     18560  models.common.Conv                      [32, 64, 3, 2]                
+  2                -1  1     19904  models.common.BottleneckCSP             [64, 64, 1]                   
+  3                -1  1     73984  models.common.Conv                      [64, 128, 3, 2]               
+  4                -1  1    161152  models.common.BottleneckCSP             [128, 128, 3]                 
+  5                -1  1    295424  models.common.Conv                      [128, 256, 3, 2]              
+  6                -1  1    641792  models.common.BottleneckCSP             [256, 256, 3]                 
+  7                -1  1   1180672  models.common.Conv                      [256, 512, 3, 2]              
+  8                -1  1    656896  models.common.SPP                       [512, 512, [5, 9, 13]]        
+  9                -1  1   1248768  models.common.BottleneckCSP             [512, 512, 1, False]          
+ 10                -1  1    131584  models.common.Conv                      [512, 256, 1, 1]              
+ 11                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']          
+ 12           [-1, 6]  1         0  models.common.Concat                    [1]                           
+ 13                -1  1    378624  models.common.BottleneckCSP             [512, 256, 1, False]          
+ 14                -1  1     33024  models.common.Conv                      [256, 128, 1, 1]              
+ 15                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']          
+ 16           [-1, 4]  1         0  models.common.Concat                    [1]                           
+ 17                -1  1     95104  models.common.BottleneckCSP             [256, 128, 1, False]          
+ 18                -1  1    147712  models.common.Conv                      [128, 128, 3, 2]              
+ 19          [-1, 14]  1         0  models.common.Concat                    [1]                           
+ 20                -1  1    313088  models.common.BottleneckCSP             [256, 256, 1, False]          
+ 21                -1  1    590336  models.common.Conv                      [256, 256, 3, 2]              
+ 22          [-1, 10]  1         0  models.common.Concat                    [1]                           
+ 23                -1  1   1248768  models.common.BottleneckCSP             [512, 512, 1, False]          
+ 24      [17, 20, 23]  1     18879  models.yolo.Detect                      [2, [[10, 13, 16, 30, 33, 23], [30, 61, 62, 45, 59, 119], [116, 90, 156, 198, 373, 326]], [128, 256, 512]]
+Model Summary: 283 layers, 7257791 parameters, 7257791 gradients
+
+Transferred 59/370 items from yolov5m.pt
+Optimizer groups: 62 .bias, 70 conv.weight, 59 other
+Scanning '../train/labels' for images and labels... 8691 found, 0 missing, 189 empty, 0 corrupted: 100% 8691/8691 [00:03<00:00, 2210.74it/s]
+New cache created: ../train/labels.cache
+Scanning '../train/labels.cache' for images and labels... 8691 found, 0 missing, 189 empty, 0 corrupted: 100% 8691/8691 [00:00<00:00, 89344843.29it/s]
+Caching images (4.5GB): 100% 8691/8691 [00:56<00:00, 153.16it/s]
+Scanning '../valid/labels' for images and labels... 2483 found, 0 missing, 59 empty, 0 corrupted: 100% 2483/2483 [00:02<00:00, 942.33it/s] 
+New cache created: ../valid/labels.cache
+Scanning '../valid/labels.cache' for images and labels... 2483 found, 0 missing, 59 empty, 0 corrupted: 100% 2483/2483 [00:00<00:00, 18432666.96it/s]
+Caching images (1.3GB): 100% 2483/2483 [00:22<00:00, 111.63it/s]
+NumExpr defaulting to 2 threads.
+
+Analyzing anchors... anchors/target = 4.18, Best Possible Recall (BPR) = 1.0000
+Image sizes 416 train, 416 test
+Using 2 dataloader workers
+Logging results to runs/train/yolov5s_results
+Starting training for 30 epochs...
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+      0/29     1.67G   0.06175      0.15   0.01002    0.2218       391       416: 100% 544/544 [01:43<00:00,  5.24it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [01:37<00:00,  1.59it/s]
+                 all    2.48e+03    1.43e+05      0.0127     0.00842      0.0196     0.00443
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+      1/29     1.76G   0.05885    0.1463  0.009575    0.2147       600       416: 100% 544/544 [01:36<00:00,  5.64it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [01:35<00:00,  1.64it/s]
+                 all    2.48e+03    1.43e+05      0.0504      0.0889       0.072      0.0173
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+      2/29     1.76G   0.05477    0.1394  0.008445    0.2026       192       416: 100% 544/544 [01:35<00:00,  5.71it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [01:37<00:00,  1.61it/s]
+                 all    2.48e+03    1.43e+05       0.187       0.494       0.242      0.0605
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+      3/29     1.76G   0.05158    0.1286  0.007179    0.1873        97       416: 100% 544/544 [01:35<00:00,  5.70it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [01:38<00:00,  1.58it/s]
+                 all    2.48e+03    1.43e+05        0.14       0.539       0.258      0.0628
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+      4/29     1.76G   0.04872    0.1233  0.005866    0.1779       252       416: 100% 544/544 [01:36<00:00,  5.66it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [01:22<00:00,  1.90it/s]
+                 all    2.48e+03    1.43e+05       0.232       0.888       0.622       0.206
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+      5/29     1.76G   0.04623    0.1155  0.005123    0.1668       341       416: 100% 544/544 [01:35<00:00,  5.70it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:59<00:00,  2.62it/s]
+                 all    2.48e+03    1.43e+05       0.271       0.928       0.712       0.244
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+      6/29     1.76G    0.0446    0.1127  0.004698     0.162       273       416: 100% 544/544 [01:35<00:00,  5.71it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:53<00:00,  2.93it/s]
+                 all    2.48e+03    1.43e+05       0.335       0.959       0.826       0.313
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+      7/29     1.76G   0.04323    0.1097  0.004485    0.1575       391       416: 100% 544/544 [01:35<00:00,  5.67it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:51<00:00,  3.05it/s]
+                 all    2.48e+03    1.43e+05       0.336       0.974       0.872       0.374
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+      8/29     1.76G   0.04201    0.1064   0.00428    0.1527       264       416: 100% 544/544 [01:34<00:00,  5.74it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:48<00:00,  3.22it/s]
+                 all    2.48e+03    1.43e+05       0.348        0.98       0.888        0.41
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+      9/29     1.76G   0.04124    0.1049  0.004083    0.1503       289       416: 100% 544/544 [01:35<00:00,  5.69it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:48<00:00,  3.19it/s]
+                 all    2.48e+03    1.43e+05       0.355        0.98         0.9       0.438
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     10/29     1.76G   0.04047    0.1036  0.003993    0.1481       103       416: 100% 544/544 [01:35<00:00,  5.68it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:46<00:00,  3.32it/s]
+                 all    2.48e+03    1.43e+05       0.383        0.98       0.916       0.469
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     11/29     1.76G   0.03971    0.1018  0.003817    0.1454       170       416: 100% 544/544 [01:34<00:00,  5.78it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:47<00:00,  3.31it/s]
+                 all    2.48e+03    1.43e+05       0.386       0.983       0.922       0.488
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     12/29     1.76G   0.03913    0.1007  0.003762    0.1436       367       416: 100% 544/544 [01:35<00:00,  5.69it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:45<00:00,  3.45it/s]
+                 all    2.48e+03    1.43e+05       0.406       0.982       0.932       0.503
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     13/29     1.76G    0.0386   0.09953  0.003665    0.1418       442       416: 100% 544/544 [01:35<00:00,  5.69it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:44<00:00,  3.49it/s]
+                 all    2.48e+03    1.43e+05       0.418       0.985       0.936       0.507
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     14/29     1.76G   0.03828   0.09837  0.003665    0.1403       154       416: 100% 544/544 [01:34<00:00,  5.73it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:44<00:00,  3.50it/s]
+                 all    2.48e+03    1.43e+05       0.426       0.984       0.941       0.529
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     15/29     1.76G   0.03788   0.09869   0.00365    0.1402       205       416: 100% 544/544 [01:35<00:00,  5.70it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:44<00:00,  3.52it/s]
+                 all    2.48e+03    1.43e+05       0.429       0.987       0.945        0.54
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     16/29     1.76G   0.03758   0.09684  0.003575     0.138       273       416: 100% 544/544 [01:34<00:00,  5.73it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:44<00:00,  3.50it/s]
+                 all    2.48e+03    1.43e+05       0.437       0.984       0.946       0.547
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     17/29     1.76G   0.03728   0.09648  0.003588    0.1374       370       416: 100% 544/544 [01:35<00:00,  5.69it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:44<00:00,  3.50it/s]
+                 all    2.48e+03    1.43e+05        0.45       0.984       0.948       0.554
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     18/29     1.76G   0.03699   0.09459    0.0035    0.1351       212       416: 100% 544/544 [01:35<00:00,  5.70it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:44<00:00,  3.54it/s]
+                 all    2.48e+03    1.43e+05       0.448       0.984        0.95       0.564
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     19/29     1.76G   0.03667   0.09549  0.003424    0.1356       372       416: 100% 544/544 [01:34<00:00,  5.76it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:43<00:00,  3.55it/s]
+                 all    2.48e+03    1.43e+05       0.462       0.983       0.951       0.569
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     20/29     1.76G   0.03659   0.09557  0.003472    0.1356       166       416: 100% 544/544 [01:35<00:00,  5.68it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:43<00:00,  3.56it/s]
+                 all    2.48e+03    1.43e+05       0.462       0.986       0.953       0.574
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     21/29     1.76G   0.03642   0.09565  0.003496    0.1356       268       416: 100% 544/544 [01:36<00:00,  5.65it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:43<00:00,  3.56it/s]
+                 all    2.48e+03    1.43e+05       0.455       0.984       0.954       0.576
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     22/29     1.76G   0.03609   0.09415  0.003363    0.1336       247       416: 100% 544/544 [01:34<00:00,  5.75it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:43<00:00,  3.57it/s]
+                 all    2.48e+03    1.43e+05       0.458       0.984       0.953       0.584
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     23/29     1.76G   0.03605   0.09318  0.003385    0.1326       351       416: 100% 544/544 [01:35<00:00,  5.69it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:43<00:00,  3.60it/s]
+                 all    2.48e+03    1.43e+05       0.472       0.983       0.955       0.586
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     24/29     1.76G   0.03586   0.09374  0.003375     0.133       428       416: 100% 544/544 [01:35<00:00,  5.70it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:42<00:00,  3.64it/s]
+                 all    2.48e+03    1.43e+05       0.471       0.983       0.954       0.589
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     25/29     1.76G   0.03579     0.094  0.003414    0.1332       389       416: 100% 544/544 [01:35<00:00,  5.68it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:44<00:00,  3.55it/s]
+                 all    2.48e+03    1.43e+05       0.474       0.984       0.956       0.591
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     26/29     1.76G    0.0357   0.09296  0.003336     0.132       230       416: 100% 544/544 [01:35<00:00,  5.70it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:43<00:00,  3.57it/s]
+                 all    2.48e+03    1.43e+05       0.476       0.983       0.955       0.595
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     27/29     1.76G   0.03556    0.0926  0.003362    0.1315       253       416: 100% 544/544 [01:35<00:00,  5.72it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:43<00:00,  3.58it/s]
+                 all    2.48e+03    1.43e+05       0.478       0.983       0.956       0.596
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     28/29     1.76G   0.03553   0.09339  0.003331    0.1323       399       416: 100% 544/544 [01:35<00:00,  5.69it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [00:43<00:00,  3.61it/s]
+                 all    2.48e+03    1.43e+05       0.477       0.985       0.956       0.601
+
+     Epoch   gpu_mem       box       obj       cls     total   targets  img_size
+     29/29     1.76G   0.03562   0.09358  0.003269    0.1325       461       416: 100% 544/544 [01:36<00:00,  5.66it/s]
+               Class      Images     Targets           P           R      mAP@.5  mAP@.5:.95: 100% 156/156 [01:08<00:00,  2.29it/s]
+                 all    2.48e+03    1.43e+05        0.48       0.984       0.956         0.6
+Optimizer stripped from runs/train/yolov5s_results/weights/last.pt, 14.8MB
+Optimizer stripped from runs/train/yolov5s_results/weights/best.pt, 14.8MB
+30 epochs completed in 1.264 hours.
